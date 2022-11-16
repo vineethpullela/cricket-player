@@ -1,8 +1,8 @@
-GET http://localhost:3000/players/
+GET http://localhost:3002/players/
 ###
 
 
-POST http://localhost:3000/players/
+POST http://localhost:3002/players/
 Content-Type: application/json
 
 {
@@ -12,10 +12,10 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:3000/players/1/
+GET http://localhost:3002/players/1/
 ###
 
-PUT http://localhost:3000/players/1/
+PUT http://localhost:3002/players/5/
 Content-Type: application/json
 
 {
@@ -25,4 +25,4 @@ Content-Type: application/json
 }
 ###
 
-DELETE http://localhost:3000/players/2/
+DELETE http://localhost:3002/players/2/
