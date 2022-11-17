@@ -23,7 +23,7 @@ const initializerDbAndServer = async () => {
     process.exit(1);
   }
 };
-initializerDbAndServer();
+module.exports = initializerDbAndServer;
 
 //API 1
 
@@ -41,7 +41,7 @@ app.get("/players/", async (request, response) => {
     };
   });
 
-  response.send(convertDbObjectToResponseObject);
+  response.send(dbObject);
 });
 
 //API 2
@@ -82,7 +82,7 @@ app.put("/players/:playerId/", async (request, response) => {
   const updatePlayerQuery = `
     update cricket_team set player_name = '${playerName}',jersey_number=${jerseyNumber},role='${role}';`;
   await db.run(updatePlayerQuery);
-  response.send("Player deatils Updated");
+  response.send("Player Details Updated");
 });
 
 //API 5
