@@ -5,9 +5,8 @@ const sqlite3 = require("sqlite3");
 const path = require("path");
 const app = express();
 app.use(express.json());
-//app.use(express.json());
-
 let db = null;
+
 const dbPath = path.join(__dirname, "cricketTeam.db");
 
 const initializerDbAndServer = async () => {
@@ -31,18 +30,18 @@ initializerDbAndServer();
 app.get("/players/", async (request, response) => {
   const getAllTeamsQuery = `
     select * from cricket_team ;`;
-  const dbObject = await db.all(getAllTeamsQuery);
+  let dbObject = await db.all(getAllTeamsQuery);
 
-  /*const convertDbObjectToResponseObject = (dbObject) => {
+  const convertDbObjectToResponseObject = dbObject.map((object) => {
     return {
-      playerId: dbObject.player_id,
-      playerName: dbObject.player_name,
-      jerseyNumber: dbObject.jersey_number,
-      role: dbObject.role,
+      playerId: object.player_id,
+      playerName: object.player_name,
+      jerseyNumber: object.jersey_number,
+      role: object.role,
     };
-  };*/
+  });
 
-  response.send(dbObject);
+  response.send(convertDbObjectToResponseObject);
 });
 
 //API 2
@@ -63,9 +62,15 @@ app.get("/players/:playerId/", async (request, response) => {
   const { playerId } = request.params;
   const getPlayerQuery = `
     select * from cricket_team where player_id = ${playerId}`;
+  const playerObject = await db.get(getPlayerQuery);
+  const responseObject = {
+    playerId: playerObject.player_id,
+    playerName: playerObject.player_name,
+    jerseyNumber: playerObject.jersey_number,
+    role: playerObject.role,
+  };
 
-  const player = await db.get(getPlayerQuery);
-  response.send(player);
+  response.send(responseObject);
 });
 
 //API 4
