@@ -15,7 +15,7 @@ const initializerDbAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     });
-    app.listen(3000, async () => {
+    /* module.exports = */ app.listen(3000, async () => {
       console.log("server running at http://localhost:3000");
     });
   } catch (e) {
@@ -23,7 +23,7 @@ const initializerDbAndServer = async () => {
     process.exit(1);
   }
 };
-module.exports = initializerDbAndServer;
+/*module.exports = */ initializerDbAndServer();
 
 //API 1
 
@@ -41,7 +41,7 @@ app.get("/players/", async (request, response) => {
     };
   });
 
-  response.send(dbObject);
+  response.send(convertDbObjectToResponseObject);
 });
 
 //API 2
@@ -51,7 +51,7 @@ app.post("/players/", async (request, response) => {
   const { playerName, JerseyNumber, role } = playerDetails;
   const createPlayerQuery = `
     INSERT INTO cricket_team (player_name,jersey_number,role)
-    VALUES('${playerName}',${jerseyNumber},'${role}');`;
+    VALUES ('${playerName}',${jerseyNumber},'${role}');`;
   await db.run(createPlayerQuery);
   //const playerId = dbResponse.lastID;
   response.send("Player Added To Team");
@@ -63,11 +63,13 @@ app.get("/players/:playerId/", async (request, response) => {
   const getPlayerQuery = `
     select * from cricket_team where player_id = ${playerId}`;
   const playerObject = await db.get(getPlayerQuery);
-  const responseObject = {
-    playerId: playerObject.player_id,
-    playerName: playerObject.player_name,
-    jerseyNumber: playerObject.jersey_number,
-    role: playerObject.role,
+  const responseObject = (playerObject) => {
+    return {
+      playerId: playerObject.player_id,
+      playerName: playerObject.player_name,
+      jerseyNumber: playerObject.jersey_number,
+      role: playerObject.role,
+    };
   };
 
   response.send(responseObject);
