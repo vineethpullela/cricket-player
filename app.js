@@ -15,7 +15,7 @@ const initializerDbAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     });
-    /* module.exports = */ app.listen(3000, async () => {
+    module.exports = app.listen(3000, async () => {
       console.log("server running at http://localhost:3000");
     });
   } catch (e) {
@@ -23,7 +23,8 @@ const initializerDbAndServer = async () => {
     process.exit(1);
   }
 };
-/*module.exports = */ initializerDbAndServer();
+module.exports = app;
+initializerDbAndServer();
 
 //API 1
 
