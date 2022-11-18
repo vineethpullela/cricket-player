@@ -55,7 +55,7 @@ app.post("/players/", async (request, response) => {
     VALUES ('${playerName}',${jerseyNumber},'${role}');`;
   await db.run(createPlayerQuery);
   //const playerId = dbResponse.lastID;
-  response.send("Player Added To Team");
+  response.send("Player Added to Team");
 });
 //API 3
 
@@ -94,7 +94,7 @@ app.put("/players/:playerId/", async (request, response) => {
 app.delete("/players/:playerId/", async (request, response) => {
   const { playerId } = request.params;
   const deletePlayerQuery = `
-    delete from cricket_team where player_id = ${playerId}`;
+    DELETE FROM cricket_team WHERE player_id = ${playerId};`;
 
   await db.run(deletePlayerQuery);
   response.send("Player Removed");
