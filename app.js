@@ -48,7 +48,7 @@ app.get("/players/", async (request, response) => {
 
 app.post("/players/", async (request, response) => {
   const playerDetails = request.body;
-  const { playerName, JerseyNumber, role } = playerDetails;
+  const { playerName, jerseyNumber, role } = playerDetails;
   const createPlayerQuery = `
     INSERT INTO cricket_team (player_name,jersey_number,role)
     VALUES ('${playerName}',${jerseyNumber},'${role}');`;
@@ -63,16 +63,17 @@ app.get("/players/:playerId/", async (request, response) => {
   const getPlayerQuery = `
     select * from cricket_team where player_id = ${playerId}`;
   const playerObject = await db.get(getPlayerQuery);
-  const responseObject = (playerObject) => {
+  const responseObject = (player) => {
     return {
-      playerId: playerObject.player_id,
-      playerName: playerObject.player_name,
-      jerseyNumber: playerObject.jersey_number,
+      playerId: player.player_id,
+      playerName: player.player_name,
+      jerseyNumber: player.jersey_number,
       role: playerObject.role,
     };
   };
+  const resultObject = responseObject(playerObject);
 
-  response.send(responseObject);
+  response.send(resultObject);
 });
 
 //API 4
