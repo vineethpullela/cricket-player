@@ -23,14 +23,14 @@ const initializerDbAndServer = async () => {
     process.exit(1);
   }
 };
-module.exports = app;
+
 initializerDbAndServer();
 
 //API 1
 
 app.get("/players/", async (request, response) => {
   const getAllTeamsQuery = `
-    select * from cricket_team ;`;
+    select * from cricket_team;`;
   let dbObject = await db.all(getAllTeamsQuery);
 
   const convertDbObjectToResponseObject = dbObject.map((object) => {
@@ -62,7 +62,7 @@ app.post("/players/", async (request, response) => {
 app.get("/players/:playerId/", async (request, response) => {
   const { playerId } = request.params;
   const getPlayerQuery = `
-    select * from cricket_team where player_id = ${playerId}`;
+    select * from cricket_team where player_id = ${playerId};`;
   const playerObject = await db.get(getPlayerQuery);
   const responseObject = (player) => {
     return {
@@ -84,13 +84,14 @@ app.put("/players/:playerId/", async (request, response) => {
   const playerDetails = request.body;
   const { playerName, jerseyNumber, role } = playerDetails;
   const updatePlayerQuery = `
-    update 
-    cricket_team 
-    set 
-    player_name = '${playerName}',
-    jersey_number = ${jerseyNumber},
-    role = '${role}'
-    where player_id = ${playerId};`;
+    UPDATE
+        cricket_team 
+    SET 
+        player_name = '${playerName}',
+        jersey_number = ${jerseyNumber},
+        role = '${role}'
+    WHERE
+        player_id = ${playerId};`;
   await db.run(updatePlayerQuery);
   response.send("Player Details Updated");
 });
@@ -103,3 +104,5 @@ app.delete("/players/:playerId/", async (request, response) => {
   await db.run(deletePlayerQuery);
   response.send("Player Removed");
 });
+
+module.exports = app;
